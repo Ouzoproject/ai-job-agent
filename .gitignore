@@ -1,0 +1,49 @@
+# =========================
+# Secrets and environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Backend
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.log
+*.db
+*.sqlite3
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Frontend
+# =========================
+node_modules/
+.next/
+out/
+.turbo/
+.vercel/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# =========================
+# Editors and operating system
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
