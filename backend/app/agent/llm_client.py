@@ -11,7 +11,7 @@ from openai.types.chat import (
     ChatCompletionToolUnionParam,
 )
 
-from app.agent.config import MODEL
+from app.agent.config import MODEL, LLM_BASE_URL
 
 load_dotenv()
 
@@ -43,7 +43,7 @@ class LLMClient:
 
     def __init__(self):
         self.client = AsyncOpenAI(
-            base_url="https://openrouter.ai/api/v1",
+            base_url=LLM_BASE_URL,
             api_key=os.getenv("LLM_API_KEY"),
         )
 

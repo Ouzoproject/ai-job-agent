@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+LLM_BASE_URL = os.getenv("LLM_BASE_URL", "https://openrouter.ai/api/v1")
 MODEL = os.getenv("LLM_MODEL", "minimax/minimax-m3:free")
 MAX_STEPS = 15
 
