@@ -84,7 +84,7 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
   const isUser = role === "user";
   return (
     <article className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`max-w-[min(90%,_48rem)] rounded-2xl px-5 py-4 shadow-sm ${isUser ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md border border-slate-200 bg-white"}`}>
+      <div className={`max-w-[min(90%,48rem)] rounded-2xl px-5 py-4 shadow-sm ${isUser ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md border border-slate-200 bg-white"}`}>
         {isUser ? <p className="whitespace-pre-wrap text-sm leading-6">{content}</p> : <MarkdownContent content={content} />}
       </div>
     </article>
