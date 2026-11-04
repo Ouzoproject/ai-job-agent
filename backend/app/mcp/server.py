@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from mcp.server import MCPServer
+from typing import Literal
 
 from app.models.job import Job, JobSummary, WebResult
 from app.services.sources import web_search
@@ -11,6 +12,10 @@ load_dotenv()
 
 mcp = MCPServer("Job Search MCP Server")
 
+EmploymentType = Literal["full_time", "part_time", "shift_night_weekend", "home_office", "minijob"]
+ContractType = Literal["fixed_term", "permanent"]
+OfferType = Literal["job", "self_employed", "apprenticeship", "internship"]
+
 # Search for jobs
 @mcp.tool()
 async def search_jobs(
@@ -18,10 +23,10 @@ async def search_jobs(
     location: str = "Germany",
     max_results: int = 50,
     radius_km: int | None = None,
-    employment_types: list[str] | None = None,
-    published_within_days: int | None = None,
-    contract_type: str | None = None,
-    offer_type: str | None = None,
+    employment_types: list[EmploymentType] | None = None,
+    contract_type: ContractType | None = None,
+    offer_type: OfferType | None = None,
+    published_within_days: int | None = None,    
     employer: str | None = None,
     profession_field: str | None = None,
     include_temp_agency_jobs: bool = True,
@@ -36,22 +41,26 @@ async def search_jobs(
         location: City, region, or country. Defaults to "Germany".
         max_results: Maximum number of results to return (default 50).
         radius_km: Search radius in kilometers around the location.
-        employment_types: Filter by employment type(s), e.g. ["full-time"].
-        published_within_days: Only return jobs published within this many days.
-        contract_type: Filter by contract type, e.g. "permanent".
-        offer_type: Filter by offer type, e.g. "internship".
+        employment_types: Filter by employment type(s). Allowed values:
+            "full_time", "part_time", "shift_night_weekend", "home_office",
+            "minijob". Use underscores, e.g. ["full_time"].
+        published_within_days: Only return jobs published within this many days (0-100).
+        contract_type: Filter by contract type: "fixed_term" or "permanent".
+        offer_type: Filter by offer type: "job", "self_employed",
+            "apprenticeship" or "internship".
         employer: Filter by employer name.
         profession_field: Filter by profession field, e.g. "IT & Development".
         include_temp_agency_jobs: Whether to include temp agency jobs (default True).
     """
-
     return await search_all(
         SearchParams(
             query=query,
             location=location,
             max_results=max_results,
             radius_km=radius_km,
-            employment_types=employment_types,
+            employment_types=[str(employment_type) for employment_type in employment_types]
+            if employment_types is not None
+            else None,
             published_within_days=published_within_days,
             contract_type=contract_type,
             offer_type=offer_type,
