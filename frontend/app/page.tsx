@@ -161,7 +161,7 @@ export default function Home() {
             <input
               type="file"
               id="cvFileInput"
-              accept=".pdf,.doc,.docx"
+              accept=".pdf,.docx,.txt,.md"
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null;
