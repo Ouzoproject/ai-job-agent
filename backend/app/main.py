@@ -2,10 +2,13 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.agent.agent import run_agent
+import json
 from app.services.cv_parser import CVParsingError, extract_text
 
 MAX_CV_SIZE = 5 * 1024 * 1024  # 5 MB
 MAX_MESSAGE_LENGTH = 2_000
+MAX_HISTORY_MESSAGES = 10      # last 5 exchanges
+MAX_HISTORY_CHARS = 6_000      # per message
 
 app = FastAPI(
     title="AI Job Agent",
@@ -23,9 +26,11 @@ app.add_middleware(
 
 @app.post("/search")
 async def search(
+    history: str = Form(default="[]"),
     message: str = Form(
         default="Find jobs that match my CV.",
         description="Extra instructions, e.g. desired role or location.",
+        
     ),
         cv: UploadFile | None = File(
         default=None,
@@ -67,6 +72,22 @@ async def search(
         except CVParsingError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    result = await run_agent(user_message=message, cv_text=cv_text)
-
+    try:
+           raw_history = json.loads(history)
+           if not isinstance(raw_history, list):
+               raise ValueError
+    except ValueError:
+           raise HTTPException(status_code=400, detail="Invalid history.")
+   
+    clean_history = [
+           {"role": m["role"], "content": m["content"][:MAX_HISTORY_CHARS]}
+           for m in raw_history[-MAX_HISTORY_MESSAGES:]
+           if isinstance(m, dict)
+           and m.get("role") in ("user", "assistant")
+           and isinstance(m.get("content"), str)
+       ]
+   
+    result = await run_agent(
+       user_message=message, cv_text=cv_text, history=clean_history
+   )
     return {"response": result}
