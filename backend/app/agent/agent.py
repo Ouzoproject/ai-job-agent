@@ -16,7 +16,8 @@ async def run_agent(user_message: str, cv_text: str | None = None, history: list
         user_message: The user's instructions. Can be a generic prompt like "find jobs that
             match my CV" when only the cv_text is provided.
         cv_text: Plain text extracted from the user's CV.
-    """
+        history: The conversation history.
+    """   
 
     async with Client(mcp) as mcp_client:
 
@@ -45,7 +46,7 @@ async def run_agent(user_message: str, cv_text: str | None = None, history: list
         *(history or []),
         {"role": "user", "content": user_message},
     ]
-
+        print(f"Sending {len(messages)} messages, CV: {bool(cv_text)}")
         # Agent loop 
         for step in range(MAX_STEPS):
             last_step = step == MAX_STEPS - 1

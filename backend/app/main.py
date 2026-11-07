@@ -86,7 +86,7 @@ async def search(
            and m.get("role") in ("user", "assistant")
            and isinstance(m.get("content"), str)
        ]
-   
+    print(f"history={len(clean_history)} msgs, cv={'yes' if cv_text else 'no'}")
     result = await run_agent(
        user_message=message, cv_text=cv_text, history=clean_history
    )
