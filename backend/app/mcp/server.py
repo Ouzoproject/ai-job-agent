@@ -20,7 +20,7 @@ OfferType = Literal["job", "self_employed", "apprenticeship", "internship"]
 @mcp.tool()
 async def search_jobs(
     query: str,
-    location: str = "Germany",
+    location: str,
     max_results: int = 50,
     radius_km: int | None = None,
     employment_types: list[EmploymentType] | None = None,
@@ -38,7 +38,7 @@ async def search_jobs(
     when the source provides one.
     Args:
         query: Search keywords.
-        location: City, region, or country. Defaults to "Germany".
+        location: City, region, or country.
         max_results: Maximum number of results to return (default 50).
         radius_km: Search radius in kilometers around the location.
         employment_types: Filter by employment type(s). Allowed values:
