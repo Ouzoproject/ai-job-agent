@@ -10,7 +10,7 @@ from app.agent.logging_utils import (
     _summarize_tool_result
 )
 
-async def run_agent(user_message: str, cv_text: str | None = None):
+async def run_agent(user_message: str, cv_text: str | None = None, history: list[dict] | None = None):
     """
     Args:
         user_message: The user's instructions. Can be a generic prompt like "find jobs that
@@ -41,9 +41,10 @@ async def run_agent(user_message: str, cv_text: str | None = None):
         # given) followed by the user's message. The agent then responds with
         # tool calls or a final answer.
         messages: list[dict] = [
-            {"role": "system", "content": build_system_prompt(cv_text)},
-            {"role": "user", "content": user_message},
-        ]
+        {"role": "system", "content": build_system_prompt(cv_text)},
+        *(history or []),
+        {"role": "user", "content": user_message},
+    ]
 
         # Agent loop 
         for step in range(MAX_STEPS):
