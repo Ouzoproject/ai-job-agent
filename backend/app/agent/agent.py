@@ -46,7 +46,6 @@ async def run_agent(user_message: str, cv_text: str | None = None, history: list
         *(history or []),
         {"role": "user", "content": user_message},
     ]
-        print(f"Sending {len(messages)} messages, CV: {bool(cv_text)}")
         # Agent loop 
         for step in range(MAX_STEPS):
             last_step = step == MAX_STEPS - 1
