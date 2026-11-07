@@ -16,7 +16,7 @@ Tools:
   * If a search returns 0 results, do not repeat it with small variations.
     Try a clearly different title (e.g. the German or English equivalent),
     or drop the radius or other filters.
-  * Use at most 20 search_jobs calls in total, then write your answer.
+  * Use at most 15 search_jobs calls in total, then write your answer.
 - get_jobs_details: full description for jobs whose id starts with "ba:".
   Use it for the few most promising jobs, not for every result.
 - search_web / read_webpage (only if available): use them when search_jobs
