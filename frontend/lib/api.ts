@@ -1,13 +1,14 @@
 const API_URL = "http://localhost:8000";
 
-export async function sendMessage(message: string, cvFile?: File) {
+export async function sendMessage(
+  message: string,
+  cvFile?: File,
+  history: { role: "user" | "assistant"; content: string }[] = [],
+) {
   const formData = new FormData();
-
   formData.append("message", message);
-
-  if (cvFile) {
-    formData.append("cv", cvFile);
-  }
+  formData.append("history", JSON.stringify(history));
+  if (cvFile) formData.append("cv", cvFile);
 
   const response = await fetch(`${API_URL}/search`, {
     method: "POST",

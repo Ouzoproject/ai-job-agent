@@ -26,13 +26,15 @@ export default function Home() {
       content: messageText,
     };
 
+    const history = messages;
+
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
     setError(null);
 
     try {
-      const data = await sendMessage(messageText, cvFile ?? undefined);
+      const data = await sendMessage(messageText, cvFile ?? undefined, history);
 
       const assistantMessage: Message = {
         role: "assistant",
@@ -40,9 +42,8 @@ export default function Home() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-
-      // Clear CV only AFTER successful sending
-      setCvFile(null);
+      // CV stays attached so follow-up searches still use it.
+      // The user can remove it with the "Remove" button.
     } catch (error) {
       console.error("Error sending message:", error);
       setError("We couldn’t complete the search. Please try again.");
