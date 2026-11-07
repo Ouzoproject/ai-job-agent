@@ -8,7 +8,7 @@ from app.services.cv_parser import CVParsingError, extract_text
 MAX_CV_SIZE = 5 * 1024 * 1024  # 5 MB
 MAX_MESSAGE_LENGTH = 2_000
 MAX_HISTORY_MESSAGES = 10      # last 5 exchanges
-MAX_HISTORY_CHARS = 6_000      # per message
+MAX_HISTORY_CHARS = 3_000      # per message
 
 app = FastAPI(
     title="AI Job Agent",
